@@ -71,7 +71,7 @@ Nmap done: 1 IP address (1 host up) scanned in 15.17 seconds
 
 ___
 ## OS Discovery
-Searching the OpenSSH versions show us this machine is most likely Bionic:
+Searching the OpenSSH version, shows us this machine is most likely Bionic:
 
 ![OpenSSH](version.png)
 
@@ -114,7 +114,7 @@ ___
 
 #### Port 5000 Gobuster
 
-```Gobuster``` running on port 5000 did find 3 possible resources api and console. At this time I will also add this target to Burp Suite.
+```Gobuster``` running on port 5000 did find 2 possible resources api and console. At this time I will also add this target to Burp Suite.
 
 ![gb](gobuster-5000.png)
 
@@ -339,7 +339,7 @@ try-harder                                                                      
 sid  sid.pub  try-harder
 ```
 
-Using Ghidra to analyze the file. The program prompts for a number and XORs it with ```0x5db3``` and ```0x5db3``` and the result must match ```0x5dc21f4```. If the results are correct and root shell will be given via ```/bin/bash -p```.
+Using Ghidra to analyze the file. The program prompts for a number and XORs it with ```0x5db3``` and ```0x1116``` and the result must match ```0x5dc21f4```. If the results are correct and root shell will be given via ```/bin/bash -p```.
 
 ![ghidra](ghidra.png)
 
