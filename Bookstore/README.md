@@ -1,5 +1,5 @@
 
-# Bookstore
+# Bookstore Tryhackme Walkthrough - Writeup
 
 A Beginner level box with basic web enumeration and REST API Fuzzing.
 
