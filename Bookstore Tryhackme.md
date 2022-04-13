@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://tryhackme-images.s3.amazonaws.com/room-icons/aba19a5cfea503b401f5550cb1004e20.jpeg" />
+	<img src='https://tryhackme-images.s3.amazonaws.com/room-icons/aba19a5cfea503b401f5550cb1004e20.jpeg'/>
 </p>
 
 # Bookstore
@@ -76,7 +76,7 @@ ___
 ## OS Discovery
 Searching the OpenSSH versions show us this machine is most likely Bionic:
 
-![[Pasted image 20220413080733.png]]
+![OpenSSH](version.png)
 
 ___
 ## Website Enumeration
