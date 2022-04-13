@@ -18,7 +18,7 @@ ___
 ## Port Scanning
 Enumerating the target with an nmap scan to see what ports are open. I begin with the following scan for all open ports: 
 
-```bash 
+```shell 
 ┌──(viorage㉿kali)-[~/Tryhackme/Bookstore]
 └─$ sudo nmap -p- -v --min-rate=8000 10.10.111.74                                                                                                                                            130 ⨯
 [sudo] password for viorage: 
