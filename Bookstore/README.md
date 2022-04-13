@@ -7,6 +7,12 @@ A Beginner level box with basic web enumeration and REST API Fuzzing.
 
 >Bookstore is a boot2root CTF machine that teaches a beginner penetration tester basic web enumeration and REST API Fuzzing. Several hints can be found when enumerating the services, the idea is to understand how a vulnerable API can be exploited.
 
+### Tools Utilized
+- nmap
+- gobuster
+- ffuf
+- ghidra
+- pwncat
 ___
 
 ## Port Scanning
