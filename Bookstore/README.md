@@ -18,7 +18,7 @@ ___
 ## Port Scanning
 Enumerating the target with an nmap scan to see what ports are open. I begin with the following scan for all open ports: 
 
-```shell 
+```shell-script 
 ┌──(viorage㉿kali)-[~/Tryhackme/Bookstore]
 └─$ sudo nmap -p- -v --min-rate=8000 10.10.111.74                                                                                                                                            130 ⨯
 [sudo] password for viorage: 
@@ -50,7 +50,7 @@ Nmap done: 1 IP address (1 host up) scanned in 9.57 seconds
 
 Now that I have scanned all 65535 TCP ports I can kick off a default script scan on 22, 80, and 5000:
 
-```bash
+```zsh
 ┌──(viorage㉿kali)-[~/Tryhackme/Bookstore]
 └─$ nmap -sVC -p 22,80,5000 -oA script 10.10.111.74           
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-04-13 08:04 EDT
