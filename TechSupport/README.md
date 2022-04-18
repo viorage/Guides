@@ -4,7 +4,7 @@ Hack into the scammer's under-development website to foil their plans.
 
 https://tryhackme.com/room/techsupp0rt1
 
-![[tech.png]]
+![tech](tech.png)
 
 ___
 
@@ -125,14 +125,14 @@ Wordpress creds
 |->
 ```
 
-![[enter.png]]
+![Enter](enter.png)
 
 We have some goals.
 
 1.) Make fake popup and host it online on Digital Ocean server.
 It looks like this was completed, if we go to ```http://10.10.108.217/test/``` we get a fake popup essentially saying our system has been compromised.
 
-![[test.png]]
+![test](test.png)
 
 2.) Fix subrion site, /subrion doesn't work, edit from panel
 
@@ -142,7 +142,7 @@ I tried browsing to /subrion but as the note said, it didn't work.
 
 It says to edit the wordpress site and below that we have some potential creds for ```admin``` but they have been ```cooked with magical forumla```. This makes me think that the ```magic``` function of https://cyberchef.immersivelabs.online might be useful. So let's take a look and as suspected we are given ```Redacted``` for the admin account password.
 
-![[cyber.png]]
+![cyber](cyber.png)
 
 ___ 
 
@@ -150,14 +150,14 @@ ___
 
 I assumed the credentials were for the wordpress login portal, but they didn't work. I am however, given a clue that they username is unknown.
 
-![[wp.png]]
+![wp](wp.png)
 
 ___
 ## Subrion Site
 
 After some messing around I went back an re-read the note. I wanted to dig a bit deeper into the ```/subrion``` message. It clearly says edit from panel so it seems that ```panel``` is an obvious choice to check out. 
 
-![[panel.png]]
+![panel](panel.png)
 
 The credentials work AND we are given a CMS version of `v4.2.1`. 
 
@@ -165,7 +165,7 @@ ___
 ## Searchsploit
 
 I utilized searchsploit to see if I could find a quick win and there is an 'Arbitrary File Upload' vulnerability.
-![[sploit.png]]
+![searchsploit](sploit.png)
 
 I download the exploit script and ran it with the -h switch which gave me the following options.
 
@@ -183,19 +183,19 @@ Options:
 
 Running the script with the credentials gives a reverse shell.
 
-![[rev_shell.png]]
+![shell](rev_shell.png)
 ___
 
 ## Full TTY
 I tried to stabalize the shell from the exploit but it killed my session. I re-ran the exploit and spawned a fresh session with a Python reverse shell and the unbreakable pwncat listener. However, that also did not work so let's just try a normal listener, which did work. Don't forget to fix your rows and columns
 
-![[tty.png]]
+![TTY](tty.png)
 
 ---
 ## Target Enumeration
 
 I began going through the configuration files for the websites and found credentials for`support` with a password of `Redacted`
-![[enumm.png]]enic
+![enum](enumm.png)
 
 ## Scamsite User
 
@@ -257,13 +257,13 @@ ___
 
 Checking GTFO bins for iconv and it allows me to read files https://gtfobins.github.io/gtfobins/iconv/
 
-![[iconv.png]]
+![iconv](iconv.png)
 
 ## Root.txt
 
 Now we can read root.txt
 
-![[rooot.png]]
+![root.txt](rooot.png)
 
 
 
