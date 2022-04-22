@@ -223,7 +223,7 @@ ___
 ## User.txt
 In paradox's home directory is the user.txt flag.
 
-![user](user_flag.png)
+![user](Guides/Cooctus/user_flag.png)
 
 ___
 

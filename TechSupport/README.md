@@ -183,7 +183,7 @@ Options:
 
 Running the script with the credentials gives a reverse shell.
 
-![shell](rev_shell.png)
+![shell](Guides/TechSupport/rev_shell.png)
 ___
 
 ## Full TTY
