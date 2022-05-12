@@ -234,7 +234,7 @@ This file containes a column of `Names` and `Roles`. I'm not sure at this time w
 |steven bradley|
 |chamber lin|
 
-Usernames are usually single words with no spaces. There are a few common ways accounts are made, one being `first-initial.lastname` so an example here would be 'd.port'. Another option is `first-name.last-initla` so `daven.port`. Then there are the same options without the `.` so `davenp` and `dport`. The file above was named `sbradley.txt` so that gives us a hint. 
+Usernames are usually single words with no spaces. There are a few common ways accounts are made, one being `first-initial.lastname` so an example here would be 'd.port'. Another option is `first-name.last-initial` so `daven.port`. Then there are the same options without the `.` so `davenp` and `dport`. The file above was named `sbradley.txt` so that gives us a hint. 
 
 Let's be thorough here and just create a username list with several different options using `username_generator` from github.
 
