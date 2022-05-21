@@ -322,8 +322,19 @@ Once we have the correct `Hash-Mode` we can attempt to crack it. Now, I'm not su
 
 ![r_crack](r_crack.png)
 
-> Creds - twilliams:roastpotatoes
+> Creds - twilliams:Redacted
 
 ___
 
-## Where to next?
+## Back to SMB
+
+With the credentials in hand, I am heading back to SMB since our next questions has to do with a `zip` file. I used `crackmapexec` to enumarate the available shares for this user.
+
+> I did perform SMB brute forcing previously with rockyou.txt. I clearly didn't exhaust the list of passwords otherwise it should have got a hit when these credentials matched up.
+
+`crackmapexec smb 10.10.145.82 -u ~/Tryhackme/RazorBlack/users.lst -p <redacted> --shares --continue-on-success`
+
+![r_smb](r_smb.png)
+
+the user `sbradly` has a `STATUS_PASSWORD_MUST_CHANGE`
+
